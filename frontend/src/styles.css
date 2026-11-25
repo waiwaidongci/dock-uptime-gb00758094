@@ -68,3 +68,13 @@ figcaption {font-weight:700;margin-bottom:.55rem}
 @media (max-width:1000px) {.workspace {grid-template-columns:minmax(180px,24%) minmax(0,1fr)} .workspace aside {padding-inline:1rem}}
 @media (max-width:767px) {.workspace {display:block}.workspace aside {position:static;height:auto;padding:1.05rem;gap:.72rem}.workspace aside nav {grid-template-columns:repeat(2,minmax(0,1fr));gap:.14rem}.workspace aside footer {display:flex;align-items:center;justify-content:space-between}.workspace main {padding:1.3rem 1rem 2rem}.login {grid-template-columns:1fr;align-content:center;gap:1rem}.login-context {padding:1rem 0}.page-head {align-items:flex-start}.table-wrap {font-size:.89rem}}
 @media (prefers-reduced-motion:reduce) {* {animation:none!important;transition:none!important}}
+.plan-builder {grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr))}
+.order-rows {grid-column:1/-1;display:grid;gap:.5rem}
+.order-row {display:grid;grid-template-columns:minmax(140px,1.2fr) minmax(90px,.7fr) minmax(120px,.8fr) auto;gap:.55rem;align-items:center}
+.order-row input {min-height:38px}
+.form-actions {grid-column:1/-1;display:flex;gap:.7rem;flex-wrap:wrap}
+.conflict {border-inline-start:4px solid var(--warn,#c2541a);padding-inline-start:1rem}
+@media (max-width:767px) {.order-row {grid-template-columns:1fr 1fr}.order-row input {min-width:0}}
+.badge {display:inline-block;margin-inline-start:.5rem;padding:.15rem .6rem;border-radius:999px;font-size:.78rem;font-weight:700;vertical-align:middle}
+.badge-exact {background:var(--stripe);color:var(--accent);border:1px solid var(--accent)}
+.badge-heuristic {background:var(--stripe);color:var(--quiet);border:1px solid var(--rule)}

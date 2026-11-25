@@ -21,6 +21,12 @@ deliveries = Table('report_deliveries', metadata, Column('id', Integer, primary_
                    Column('schedule_id', Integer, nullable=False), Column('run_id', Integer, nullable=False),
                    Column('recipient', String(100), nullable=False), Column('scheduled', Double, nullable=False),
                    Column('delivered', Double, nullable=False), UniqueConstraint('schedule_id', 'scheduled'))
+maintenance_plans = Table('maintenance_plans', metadata, Column('id', Integer, primary_key=True),
+                         Column('dataset_id', Integer, nullable=False, index=True),
+                         Column('checksum', String(64), nullable=False, unique=True),
+                         Column('month', String(7), nullable=False), Column('orders', JSON, nullable=False),
+                         Column('state', String(16), nullable=False, index=True), Column('result', JSON),
+                         Column('owner', String(40), nullable=False), Column('created', Double, nullable=False))
 audit = Table('operation_audit', metadata, Column('id', Integer, primary_key=True),
               Column('at', Double, nullable=False), Column('actor', String(40), nullable=False),
               Column('action', String(30), nullable=False), Column('subject', Integer, nullable=False))

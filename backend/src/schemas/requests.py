@@ -19,6 +19,18 @@ class Run(BaseModel):
     options: dict = Field(default_factory=dict)
 
 
+class MaintenanceOrder(BaseModel):
+    record_id: str = Field(min_length=1, max_length=60)
+    dock: str = Field(min_length=1, max_length=40)
+    minutes: int = Field(gt=0, le=31 * 24 * 60)
+
+
+class MaintenancePlanRequest(BaseModel):
+    dataset_id: int = Field(gt=0)
+    month: str = Field(min_length=7, max_length=7)
+    orders: list[MaintenanceOrder] = Field(min_length=1, max_length=500)
+
+
 class Review(BaseModel):
     decision: Literal['approved', 'returned']
     note: str = Field(min_length=2, max_length=1000)

@@ -6,9 +6,10 @@ from src.config.settings import ARTIFACTS
 from src.constants.enums import Role
 from src.controllers.query import delivery_status, jobs, recent_activity, require_row, revisions
 from src.models.tables import datasets, runs
-from src.schemas.requests import Delivery, Import, Login, Review, Run
+from src.schemas.requests import Delivery, Import, Login, MaintenancePlanRequest, Review, Run
 from src.services.data import PROFILE, csv_records, save_revision
 from src.services.domain import sample_rows
+from src.services.planning import get_plan, list_plans, submit_plan
 from src.services.workflow import add_run, cancel_schedule, review_run, schedule_report
 from src.utils.exports import write_csv
 from src.utils.security import allowed, authenticate, signed_in
@@ -100,6 +101,31 @@ def stop_schedule(key: int, account=Depends(reviewer)):
 @router.get('/audit')
 def activity(account=Depends(signed_in)):
     return recent_activity()
+
+
+@router.get('/maintenance/plans')
+def maintenance_plans(account=Depends(signed_in)):
+    return list_plans()
+
+
+@router.post('/maintenance/plans', status_code=201)
+def plan_maintenance(body: MaintenancePlanRequest, account=Depends(analyst)):
+    return submit_plan(body, account['username'])
+
+
+@router.get('/maintenance/plans/{key}')
+def maintenance_plan(key: int, account=Depends(signed_in)):
+    return get_plan(key)
+
+
+@router.get('/maintenance/plans/{key}/report.csv')
+def maintenance_report(key: int, account=Depends(signed_in)):
+    plan = get_plan(key)
+    result = plan['result']
+    rows = result['rows'] if result['feasible'] else result['conflicts']
+    fields = list(rows[0]) if rows else ['保养单号', '月台', '时长（分钟）']
+    name = f"保养排程-{plan['month']}-{key}.csv"
+    return download_csv(write_csv(rows, fields), name)
 
 
 @router.get('/runs/{key}/report.csv')
